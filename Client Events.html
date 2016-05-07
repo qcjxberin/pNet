@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Client Events</title>
+        <style>
+			* { list-style:square; font-family:Tahoma; margin:0px; padding:0px; font-size:14px; }
+			li { margin-left:20px; }
+			#page { width:500px; text-align:left; margin-bottom:20px; }
+			#head { margin-top:20px; }
+			#head a { font-size:18px; font-weight:bold; }
+			a { color:#000000; text-decoration:none; }
+			a:hover { font-weight:bold; }
+			#code { background:#EEEEEE; padding:10px; font-size:12px; border:1px solid #CCCCCC; }
+			#code * { font-size:12px; }
+		</style>
+    </head>
+    <body>
+    <center>
+    	<div id="page">
+        	<div id="head"><a name="0">Client Events</a></div>
+            <li><a href="#Connect">Connect</a></li>
+            <li><a href="#Disconnect">Disconnect</a></li>
+            <li><a href="#Receive">Receive</a></li>
+            <li><a href="#Send">Send</a></li>
+            <li><a href="#OptionChange">OptionChange</a></li>
+            <div id="head"><a name="Connect" href="#0">Connect</a></div>
+            This event being fired when a 'Connect' operation ended.
+            <div id="code"><b>int</b> code, <b>string</b> message, <b>byte</b> reasonCode</div>
+            <i>0, "Connected.", 0<br>
+            1, "An error occured! (client-side)", 0<br>
+            2, "Connection failed!", 0<br>
+            3, "Server full!", 0<br>
+            4, "Server refused the connection!", reasonCode<br>
+            5, "Connection established but an error occured!", 0<br>
+            6, "Client must be disconnected to establish another connection!", 0<br>
+            7, "'remoteEp' must be a valid 'EndPoint' instance!", 0<br>
+            8, "Input bytes are not null but empty! (Zero length? Pass 'null' instead.)", 0<br>
+            9, "Input bytes are too long, must be shorter than 97 bytes length!", 0<br>
+            10, "Cannot bind socket!", 0</i>
+            <div id="head"><a name="Disconnect" href="#0">Disconnect</a></div>
+            This event being fired when a 'Disconnect' operation ended.
+            <div id="code"><b>int</b> code, <b>string</b> message, <b>byte</b> reasonCode</div>
+            <i>0, "Disconnected.", 0<br>
+            1, "An error occured! (client-side)", 0<br>
+            2, "An error occured! (server-side)", 0<br>
+            3, "Network locked! (client-side)", 0<br>
+            4, "Network locked! (server-side)", 0<br>
+            5, "Connection timed out! (client-side)", 0<br>
+            6, "Connection timed out! (server-side)", 0<br>
+            7, "Server dropped the connection!", reasonCode<br>
+            8, "Too high ping! (server-side)", 0<br>
+            9, "Already disconnected!", 0<br>
+            10, "Pending connection request cancalled!", 0</i>
+            <div id="head"><a name="Receive" href="#0">Receive</a></div>
+            This event being fired when client successfully received some data.
+            <div id="code"><b>byte[]</b> data, <b>int</b> dataLength, <b>PacketType</b> type</div>
+            <div id="head"><a name="Send" href="#0">Send</a></div>
+            This event being fired when a 'Send' operation ended with an error.
+            <div id="code"><b>int</b> code, <b>string</b> message</div>
+            <i>0, "Client must be connected to send data!"<br>
+            1, "Cannot perform a successful send operation because data is null or empty (zero length)!"</i>
+            <div id="head"><a name="OptionChange" href="#0">OptionChange</a></div>
+            This event being fired when a 'OptionChange' operation ended.
+            <div id="code"><b>int</b> code, <b>string</b> message, <b>ClientOption</b> option</div>
+            <i>0, "X changed.", option<br>
+            1, "X must be higher than Y!", option<br>
+            2, "X must be lower than Z!", option<br>
+            99, "Client must be disconnected to change any option!", option</i>
+        </div>
+    </center>
+    </body>
+</html>

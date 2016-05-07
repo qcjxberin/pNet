@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Server Events</title>
+        <style>
+			* { list-style:square; font-family:Tahoma; margin:0px; padding:0px; font-size:14px; }
+			li { margin-left:20px; }
+			#page { width:500px; text-align:left; margin-bottom:20px; }
+			#head { margin-top:20px; }
+			#head a { font-size:18px; font-weight:bold; }
+			a { color:#000000; text-decoration:none; }
+			a:hover { font-weight:bold; }
+			#code { background:#EEEEEE; padding:10px; font-size:12px; border:1px solid #CCCCCC; }
+			#code * { font-size:12px; }
+		</style>
+    </head>
+    <body>
+    <center>
+    	<div id="page">
+        	<div id="head"><a name="0">Server Events</a></div>
+            <li><a href="#Start">Start</a></li>
+            <li><a href="#Stop">Stop</a></li>
+            <li><a href="#OptionChange">OptionChange</a></li>
+            <li><a href="#Login">Login</a></li>
+            <li><a href="#Connect">Connect</a></li>
+            <li><a href="#Disconnect">Disconnect</a></li>
+            <li><a href="#Receive">Receive</a></li>
+            <li><a href="#Send">Send</a></li>
+            <li><a href="#PingUpdate">PingUpdate</a></li>
+            <div id="head"><a name="Start" href="#0">Start</a></div>
+            This event being called when a 'Start' operation ended.
+            <div id="code"><b>int</b> code, <b>string</b> message</div>
+            <i>0, "Started."<br>
+            1, "Already started!"<br>
+            2, "Cannot create socket!"<br>
+            3, "Cannot create listen thread!"<br>
+            4, "Cannot bind socket!"<br>
+            5, "Cannot start listen thread!"<br>
+            6, "An error occured!"</i>
+            <div id="head"><a name="Stop" href="#0">Stop</a></div>
+            This event being called when a 'Stop' operation ended.
+            <div id="code"><b>int</b> code, <b>string</b> message</div>
+			<i>0, "Stopped."<br>
+            1, "Already stopped!"<br>
+            2, "An error occured!"</i>
+            <div id="head"><a name="OptionChange" href="#0">OptionChange</a></div>
+            This event being called when a 'OptionChange' operation ended.
+            <div id="code"><b>int</b> code, <b>string</b> message, <b>ServerOption</b> option</div>
+            <i>0, "X changed.", option<br>
+            1, "X must be higher than Y!", option<br>
+            2, "X must be lower than Z!", option<br>
+            99, "Server must be stopped to change any option!", option</i>
+            <div id="head"><a name="Login" href="#0">Login</a></div>
+            This event being called when a client attempted to establish connection.
+            <div id="code"><b>uint</b> clientId, <b>EndPoint</b> endPoint, <b>byte[]</b> bytes</div>
+            <i>If this call returned 0 (zero), that means login accepted. If this call returned a byte that is not 0 (zero), that means login refused with this return value.</i>
+            <div id="head"><a name="Connect" href="#0">Connect</a></div>
+            This event being called when a connection setup ended.
+            <div id="code"><b>uint</b> clientId, <b>int</b> code, <b>string</b> message</div>
+            <i>clientId, 0, "Client connected."<br>
+            clientId, 1, "Client peer setup failed!"</i>
+            <div id="head"><a name="Disconnect" href="#0">Disconnect</a></div>
+            This event being called when a client dropped from the server.
+            <div id="code"><b>uint</b> clientId, <b>int</b> code, <b>string</b> message, <b>byte</b> reasonCode</div>
+            <i>0, "Client disconnected.", reasonCode<br>
+            1, "An error occured! (client-side)", 0<br>
+            2, "An error occured! (server-side)", 0<br>
+            3, "Network locked! (client-side)", 0<br>
+            4, "Network locked! (server-side)", 0<br>
+            5, "Connection timed out! (client-side)", 0<br>
+            6, "Connection timed out! (server-side)", 0<br>
+            7, "Server dropped the connection!", 0<br>
+            8, "Too high ping! (server-side)", 0<br>
+            9, "Client peer setup failed!", 0<br>
+			10, "Server stopped!", 0</i>
+            <div id="head"><a name="Receive" href="#0">Receive</a></div>
+            This event being called when server successfully received some data from a connected client.
+            <div id="code"><b>uint</b> clientId, <b>byte[]</b> data, <b>int</b> dataLength, <b>PacketType</b> type</div>
+            <div id="head"><a name="Send" href="#0">Send</a></div>
+            This event being called when a 'Send' operation ended with an error.
+            <div id="code"><b>int</b> code, <b>string</b> message, <b>uint</b> clientId</div>
+            <i>0, "Server must be running to send data!", 0<br>
+            1, "Cannot perform a successful send operation because data is null or empty (zero length)!", 0<br>
+            2, "Client not found!", clientId</i>
+            <div id="head"><a name="PingUpdate" href="#0">PingUpdate</a></div>
+            This event being called when server successfully completed a ping-pong latency calculation for a connected client.
+            <div id="code"><b>uint</b> clientId, <b>uint</b> ping</div>
+        </div>
+    </center>
+    </body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Protocol</title>
+        <style>
+			* { list-style:square; font-family:Tahoma; margin:0px; padding:0px; font-size:14px; }
+			li { margin-left:20px; }
+			#page { width:500px; text-align:left; margin-bottom:20px; }
+			#head { margin-top:20px; }
+			#head a { font-size:18px; font-weight:bold; }
+			a { color:#000000; text-decoration:none; }
+			a:hover { font-weight:bold; }
+			#code { background:#EEEEEE; padding:10px; font-size:12px; border:1px solid #CCCCCC; }
+		</style>
+    </head>
+    <body>
+    <center>
+    	<div id="page">
+        	<div id="head"><a name="0">Protocol</a></div>
+            <li><a href="#111">111: Connection Request (C)</a></li>
+            <li><a href="#112">112: Connection Accepted (S)</a></li>
+            <li><a href="#113">113: Connection Refused -Server Full (S)</a></li>
+            <li><a href="#114">114: Connection Refused -Generic Reason (S)</a></li>
+            <li><a href="#115">115: Ping Request (S)</a></li>
+            <li><a href="#116">116: Ping Response (C)</a></li>
+            <li><a href="#117">117: Drop Packet -Error</a></li>
+            <li><a href="#118">118: Drop Packet -Timeout</a></li>
+            <li><a href="#119">119: Drop Packet -Network Lock</a></li>
+            <li><a href="#120">120: Drop Packet -High Ping (S)</a></li>
+            <li><a href="#121">121: Drop Packet -Generic Reason</a></li>
+            <li><a href="#122">122: Unreliable Data Request</a></li>
+            <li><a href="#123">123: Reliable Data Request (Pkt)</a></li>
+            <li><a href="#124">125: Reliable Data Response (Ack)</a></li>
+            <div id="head"><a name="111" href="#0">111: Connection Request (C)</a></div>
+            This packet being sent while client trying to connect to a server. Client re-sends this packet 5 times in a connection period. If there is no response coming from server after 5 tries, that means connection failed. There are 2 version of this packet. Packet contains 'UsernameLength', 'PasswordLength' and 'Version'. 'UsernameLength' is the length of username that is starting from body's top. 'PasswordLength' is the length of password that is starting from username's end in the body. 'Version' is a special 8-bit integer (or 1 char/byte) and there is no built-in checking in the both server and client sides. This value is an information value that can be handled by the developer(s). Packet header is 3 bytes length.
+            <div id="code">[Flag] (8bit)<br>[UsernameLength] (8bit)<br>[PasswordLength] (8bit)<br>[Version] (8bit)<br>[Body] (...)</div>
+            <div id="head"><a name="112" href="#0">112: Connection Accepted (S)</a></div>
+            This packet being sent when server accepted an incoming connection request. Packet contains 'connection id' and 'buffer size'. 'Connection id' is client's server-side identifier integer that is unique in the clients list. 'Buffer size' is the limit of the server socket which is limiting packet length/buffer. Packet is 5 bytes length.
+            <div id="code">[Flag] (8bit)<br>[ConnectionId] (16bit)<br>[BufferSize] (16bit)</div>
+            <div id="head"><a name="113" href="#0">113: Connection Refused -Server Full (S)</a></div>
+            This packet being sent when server refused an incoming connection request caused by 'MaxClients' value that is limiting maximum connection count in the server. Packet is 1 byte length.
+            <div id="code">[Flag] (8bit)</div>
+            <div id="head"><a name="114" href="#0">114: Connection Refused -Generic Reason (S)</a></div>
+            This packet being sent when server refused an incoming connection request caused by a server-side event callback that is being handled by the server-side 3rd-party library that is developed by the solution developer(s). Packet is 2 bytes length. Packet contains a 'reason code' that is 1 byte and idenfies the refuse reason.
+            <div id="code">[Flag] (8bit)<br>[ReasonCode] (8bit)</div>
+            <div id="head"><a name="115" href="#0">115: Ping Request (S)</a></div>
+            This packet being sent when server created a new ping request. Packet is 5 bytes length. Packet contains 'ping id' and 'last calculated ping'. 'Ping id' is an identifier integer that is identifying the ping request which is provides a ping-pong latency calculation. 'Last calculated ping' is the last calculated latency between ping request-response and it is calculating and storing by the server.
+            <div id="code">[Flag] (8bit)<br>[PingId] (16bit)<br>[LastPing] (16bit)</div>
+            <div id="head"><a name="116" href="#0">116: Ping Response (C)</a></div>
+            This packet being sent when client handled a ping request. Packet is 3 bytes length. Packet contains 'ping id'. 'Ping id' is an identifier integer that created by the server and identifying the ping request which is provides a ping-pong latency calculation server-side.
+            <div id="code">[Flag] (8bit)<br>[PingId] (16bit)</div>
+            <div id="head"><a name="117" href="#0">117: Drop Packet -Error</a></div>
+            This packet being sent when a side faced an error in the connection period. Packet is 1 byte length.
+            <div id="code">[Flag] (8bit)</div>
+            <div id="head"><a name="118" href="#0">118: Drop Packet -Timeout</a></div>
+            This packet being sent when a side decided to connection was lost because of the elapsed time after last ping request-response operation. Packet is 1 byte length.
+            <div id="code">[Flag] (8bit)</div>
+            <div id="head"><a name="119" href="#0">119: Drop Packet -Network Lock</a></div>
+            This packet being sent when a side faced a network lock that is being decided with the maximum reliable data queue size. Packet is 1 byte length.
+            <div id="code">[Flag] (8bit)</div>
+            <div id="head"><a name="120" href="#0">120: Drop Packet -High Ping (S)</a></div>
+            This packet being sent when server decided to connection is bad (high latency) because of maximum ping value exceeded. Packet is 1 byte length.
+            <div id="code">[Flag] (8bit)</div>
+            <div id="head"><a name="121" href="#0">121: Drop Packet -Generic Reason</a></div>
+            This packet being sent when a side wanted to close the connection. This connection close attempt being caused by a event that is developed by the solution developer(s). Packet contains 'ReasonCode'. 'ReasonCode' identifies the code of the connection drop/close reason. Packet is 2 bytes length.
+            <div id="code">[Flag] (8bit)<br>[ReasonCode] (8bit)</div>
+            <div id="head"><a name="122" href="#0">122: Unreliable Data Request</a></div>
+            This packet being sent when a side wanted to send a data packet to other side unreliably. This transport is unreliable that means packet can be duplicated, lost or modified. Packet header is 1 byte length.
+            <div id="code">[Flag] (8bit)<br>[Body] (...)</div>
+            <div id="head"><a name="123" href="#0">123: Reliable Data Request (Pkt)</a></div>
+            This packet being sent when a side wanted to send a data packet to other side reliably. This transport is reliable that means packet will not be duplicated, lost or modified. Packet contains 'PacketId' and 'CheckSum'. 'PacketId' is sender-side packet's id that provides no duplication and no packet lose via re-send method. 'CheckSum' is a special algorithm that provides receiver-side packet validation, so receiver can decide packet is modified or not. Packet header is 4 bytes length.
+            <div id="code">[Flag] (8bit)<br>[PacketId] (16bit)<br>[CheckSum] (8bit)<br>[Body] (...)</div>
+            <div id="head"><a name="124" href="#0">124: Reliable Data Response (Ack)</a></div>
+            This packet being sent when a side successfully received a reliable data packet from other side. This packet is reports the acknowladged 'PacketId' to other side like "I've received and validated the packet 13!". Packet contains 'PacketId'. 'PacketId' is the acknowladged packet's id. Packet is 3 bytes length.
+            <div id="code">[Flag] (8bit)<br>[PacketId] (16bit)</div>
+        </div>
+    </center>
+    </body>
+</html>

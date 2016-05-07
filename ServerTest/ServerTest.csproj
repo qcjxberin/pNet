@@ -45,9 +45,6 @@
     <Reference Include="Externals">
       <HintPath>..\Externals\Externals.dll</HintPath>
     </Reference>
-    <Reference Include="MonoLightTech.Serialization">
-      <HintPath>C:\Users\AhmetFaruk\Desktop\RPG Server\pNet\MonoLightTech.Serialization.dll</HintPath>
-    </Reference>
     <Reference Include="pNetServer">
       <HintPath>..\Server\pNetServer.dll</HintPath>
     </Reference>

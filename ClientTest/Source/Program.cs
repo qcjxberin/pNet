@@ -4,7 +4,6 @@ using pNet.Client;
 using pNet.Externals;
 using System.Text;
 using pMd5;
-using MonoLightTech.Serialization;
 
 internal class Program
 {

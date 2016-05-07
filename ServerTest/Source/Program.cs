@@ -3,7 +3,6 @@ using pNet.Server;
 using pNet.Externals;
 using System.Net;
 using System.Text;
-using MonoLightTech.Serialization;
 
 internal class Program
 {
